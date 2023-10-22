@@ -13,14 +13,20 @@ queue = cl.CommandQueue(ctx,properties=cl.command_queue_properties.PROFILING_ENA
 
 mf = cl.mem_flags
 # Create the kernel matrix for edge detection
-kernel = np.array([[-1, -1, -1, -1, -1],
+kernel_edge = np.array([[-1, -1, -1, -1, -1],
                      [-1,  2,  2,  2, -1],
                      [-1,  2,  8,  2, -1],
                      [-1,  2,  2,  2, -1],
                      [-1, -1, -1, -1, -1]])
 
-kernel = kernel.astype(np.float32).flatten()
+kernel_blur = np.array([[1, 1, 1, 1, 1],
+                     [1,  1,  1,  1, 1],
+                     [1,  1,  1,  1, 1],
+                     [1,  1,  1,  1, 1],
+                     [1, 1, 1, 1, 1]])/25
+kernel = kernel_edge.astype(np.float32)
 kernel_size = np.int32(kernel.shape[0])
+kernel = kernel.flatten()
 
 # Read the OpenCL kernel code from an external file
 with open("process.cl", "r") as kernel_file:
